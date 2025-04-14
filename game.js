@@ -1,58 +1,113 @@
-let ask = confirm("Wanna play a game?");
 let options = ["rock", "paper", "scissors"];
 let humanScore = 0;
 let computerScore = 0;
+let humanChoice;
 
-if (!ask){
-  bye();
+function playGame(){
+  rock.disabled = false;
+  paper.disabled = false;
+  scissors.disabled = false;
+  humanScore = 0;
+  computerScore = 0;
+  hScore.textContent = humanScore;
+  cScore.textContent = computerScore;
 }
-else {
-  for (let i = 0; i < 5; i++){
-    playRound(getHumanChoice(), getComputerChoice());
-  }
-  alert(`Player score: ${humanScore}, Computer score: ${computerScore}`)
-  if (humanScore > computerScore) {
-    alert("Player wins! Yay!!!");
-  }
-  else if (computerScore > humanScore) {
-    alert("Computer wins! Oh no! :o");
-  } else {
-    alert("Tie round!");
-  }
-}
+
+const startContainer = document.querySelector(".play");
+startContainer.textContent = "Start";
+startContainer.addEventListener("click", () => {
+  startContainer.textContent = "Restart";
+  playGame();
+})
+
+const interactionContainer = document.querySelector("body");
+interactionContainer.setAttribute("style", "background-color: skyblue")
+
+const startButton = document.querySelector(".play");
+startButton.setAttribute("style", "background-color:rgb(241, 41, 41); border: solid rgb(173, 16, 16); border-radius: 5px")
+
+const rock = document.createElement("button");
+rock.classList.add("Rock");
+rock.textContent = "Rock";
+rock.addEventListener("click", () => {
+  humanChoice = "rock";
+  gameRound(humanChoice, getComputerChoice());
+})
+rock.disabled = true;
+interactionContainer.append(rock);
+
+const paper = document.createElement("button");
+paper.classList.add("Paper");
+paper.textContent = "Paper";
+paper.addEventListener("click", () => {
+  humanChoice = "paper";
+  gameRound(humanChoice, getComputerChoice());
+})
+paper.disabled = true;
+interactionContainer.append(paper);
+
+const scissors = document.createElement("button");
+scissors.classList.add("Scissors");
+scissors.textContent = "Scissors";
+scissors.addEventListener("click", () => {
+  humanChoice = "scissors";
+  gameRound(humanChoice, getComputerChoice());
+})
+scissors.disabled = true;
+interactionContainer.append(scissors);
+
+const hScore = document.querySelector(".hScore");
+const cScore = document.querySelector(".cScore");
+hScore.textContent = humanScore;
+cScore.textContent = computerScore;
 
 function getComputerChoice(){
   let index = Math.floor(Math.random() * options.length);
   return options[index];
 }
 
-function getHumanChoice(){
-  let choice = prompt("Rock, paper or scissors?").toLowerCase();
-  return choice;
-}
-
-function playRound(humanChoice, computerChoice) {
-  if (humanChoice == "rock" && computerChoice == "scissors"){
+function gameRound(playerChoice, computerChoice) {
+  if (playerChoice == "rock" && computerChoice == "scissors"){
     alert("Player gets a point!");
     humanScore++;
+    chkandupdScores(humanScore, computerScore);;
   }
-  else if (humanChoice == "paper" && computerChoice == "rock"){
+  else if (playerChoice == "paper" && computerChoice == "rock"){
     alert("Player gets a point!");
     humanScore++;
+    chkandupdScores(humanScore, computerScore);;
   }
-  else if (humanChoice == "scissors" && computerChoice == "paper"){
+  else if (playerChoice == "scissors" && computerChoice == "paper"){
     alert("Player gets a point!");
     humanScore++;
+    chkandupdScores(humanScore, computerScore);;
   }
-  else if (humanChoice.length == computerChoice.length){
-    alert("Tie! No points awarded.")
+  else if (playerChoice.length == computerChoice.length){
+    alert("Tie! No points awarded.");
+    chkandupdScores(humanScore, computerScore);;
   } 
   else {
     alert("Computer gets a point!");
     computerScore++;
+    chkandupdScores(humanScore, computerScore);
   }
 }
 
-function bye(){
-  alert("Ok then. Bye!");
+function chkandupdScores(humanScore, computerScore){
+  
+  hScore.textContent = humanScore;
+  cScore.textContent = computerScore;
+  
+  if (humanScore == 5){
+    alert("Player wins!");
+    rock.disabled = true;
+    paper.disabled = true;
+    scissors.disabled = true;
+  } 
+  else if (computerScore == 5){
+    alert("Computer wins!");
+    rock.disabled = true;
+    paper.disabled = true;
+    scissors.disabled = true;
+  }
 }
